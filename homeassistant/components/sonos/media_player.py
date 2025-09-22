@@ -538,6 +538,10 @@ class SonosMediaPlayerEntity(SonosEntity, MediaPlayerEntity):
 
         share_link = self.coordinator.share_link
         if share_link.is_share_link(media_id):
+            # Pass the title to SoCo to fill metadata.
+            # Use empty string, if no title is provided.
+            title = kwargs.get("extra", {}).pop("title", "")
+            kwargs["dc_title"] = title
             if enqueue == MediaPlayerEnqueue.ADD:
                 share_link.add_share_link_to_queue(
                     media_id, timeout=LONG_SERVICE_TIMEOUT
